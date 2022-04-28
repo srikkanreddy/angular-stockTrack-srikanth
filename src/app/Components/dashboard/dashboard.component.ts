@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddStockComponent } from 'src/app/Components/add-stock/add-stock.component';
-import { StocksListComponent } from 'src/app/Components/stocks-list/stocks-list.component';
+import { AddStockComponent } from '../../Components/add-stock/add-stock.component';
+import { StocksListComponent } from '../../Components/stocks-list/stocks-list.component';
 
 @Component({
   selector: 'app-dashboard',
