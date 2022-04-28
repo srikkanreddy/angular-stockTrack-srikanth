@@ -14,8 +14,8 @@ import { RouterModule } from '@angular/router';
 import { ApiService } from './services/api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from './components/modal/modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+// import { ModalComponent } from './components/modal/modal.component';
+// import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({

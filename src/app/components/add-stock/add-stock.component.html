@@ -2,15 +2,32 @@
   <div class="card-body">
     <h5>Enter the symbol of a stock to track (i.e., AAPL, TSLA, GOOGL)</h5>
     <div class="input-group mb-3">
-      <!-- <input type="text" (click)="openModal()" /> -->
+      <input type="text" [(ngModel)]="stockName" (keyup)="searchStock()" />
       <button
         class="btn btn-outline-secondary"
         type="button"
         id="button-addon2"
-        (click)="searchStock()"
+        (click)="addStockToList()"
       >
         Track Stock
       </button>
     </div>
+    <ng-container *ngIf="stocksSearchList?.length > 0 && showSearchList">
+      <!-- <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="showSearchList = !showSearchList"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+      <ul>
+        <li *ngFor="let stock of stocksSearchList">
+          <p style="cursor: pointer" (click)="selectStock(stock)">
+            {{ stock?.displaySymbol }}
+          </p>
+        </li>
+      </ul>
+    </ng-container>
   </div>
 </div>
