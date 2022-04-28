@@ -11,6 +11,7 @@ import { StockViewComponent } from './components/stock-view/stock-view.component
 import { StockService } from './services/stock.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { ApiService } from './services/api.service';
 
 @NgModule({
   imports: [
@@ -28,6 +29,6 @@ import { RouterModule } from '@angular/router';
     StockViewComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [StockService],
+  providers: [StockService, ApiService],
 })
 export class AppModule {}
