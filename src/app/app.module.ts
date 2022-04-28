@@ -12,6 +12,9 @@ import { StockService } from './services/stock.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ApiService } from './services/api.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -20,6 +23,8 @@ import { ApiService } from './services/api.service';
     AppRoutingModule,
     HttpClientModule,
     RouterModule,
+    BrowserAnimationsModule,
+    NgbModule,
   ],
   declarations: [
     AppComponent,
@@ -27,6 +32,7 @@ import { ApiService } from './services/api.service';
     AddStockComponent,
     StocksListComponent,
     StockViewComponent,
+    ModalComponent,
   ],
   bootstrap: [AppComponent],
   providers: [StockService, ApiService],
