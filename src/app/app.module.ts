@@ -15,6 +15,8 @@ import { ApiService } from './services/api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from './components/modal/modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -25,6 +27,7 @@ import { ModalComponent } from './components/modal/modal.component';
     RouterModule,
     BrowserAnimationsModule,
     NgbModule,
+    CommonModule,
   ],
   declarations: [
     AppComponent,
@@ -34,7 +37,8 @@ import { ModalComponent } from './components/modal/modal.component';
     StockViewComponent,
     ModalComponent,
   ],
+  entryComponents: [ModalComponent],
   bootstrap: [AppComponent],
-  providers: [StockService, ApiService],
+  providers: [StockService, ApiService, NgbActiveModal],
 })
 export class AppModule {}
