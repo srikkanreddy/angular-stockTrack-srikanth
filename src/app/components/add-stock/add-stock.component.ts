@@ -18,9 +18,9 @@ export class AddStockComponent implements OnInit {
 
   ngOnInit() {}
 
-  openModal() {
-    const modalRef = this.modalService.open(ModalComponent);
-  }
+  // openModal() {
+  //   const modalRef = this.modalService.open(ModalComponent);
+  // }
 
   searchStock() {
     this.stockService

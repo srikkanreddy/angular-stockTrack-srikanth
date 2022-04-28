@@ -35,10 +35,10 @@ import { CommonModule } from '@angular/common';
     AddStockComponent,
     StocksListComponent,
     StockViewComponent,
-    ModalComponent,
+    //ModalComponent,
   ],
   // entryComponents: [ModalComponent],
-  bootstrap: [AppComponent, ModalComponent],
-  providers: [StockService, ApiService, NgbActiveModal],
+  bootstrap: [AppComponent],
+  providers: [StockService, ApiService],
 })
 export class AppModule {}
