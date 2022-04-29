@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { QuoteDetail } from '../../models/quote.model';
+import { SentimentDetail } from '../../models/sentiment.model';
 import { StockDetail } from '../../models/stock.model';
 import { StockService } from '../../services/stock.service';
+import { debounceTime } from 'rxjs/operators';
 //import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -10,45 +12,52 @@ import { StockService } from '../../services/stock.service';
   styleUrls: ['./add-stock.component.css'],
 })
 export class AddStockComponent implements OnInit {
-  stockName: any;
+  stockName: string;
   stocksSearchList: StockDetail[];
-  showSearchList: boolean;
-  selectedStock: any;
+  selectedStock: StockDetail = null;
+  stocksList: SentimentDetail[];
+  stockQuotesListObj: SentimentDetail;
+  stockQuotesListArr: SentimentDetail[];
 
   constructor(private stockService: StockService) {}
 
-  ngOnInit() {}
-
-  // openModal() {
-  //   const modalRef = this.modalService.open(ModalComponent);
-  // }
+  ngOnInit() {
+    this.stockQuotesListArr =
+      JSON.parse(localStorage.getItem('userStocks')) || [];
+  }
 
   searchStock() {
-    this.stockService.searchSymbol(this.stockName).subscribe((resp: any) => {
-      this.showSearchList = true;
-      this.stocksSearchList = resp?.result;
-      console.log(resp);
-    });
+    if (this.stockName && this.stockName != '') {
+      this.stockService.searchSymbol(this.stockName).subscribe((resp: any) => {
+        if (this.stockName) {
+          this.stocksSearchList = resp?.result;
+        }
+      });
+    } else {
+      this.stocksSearchList = [];
+      this.selectedStock = null;
+    }
   }
 
-  getQuote() {
-    this.stockService.getQuote(this.stockName).subscribe((res) => {
-      console.log(res);
-    });
+  getStockQuotedetails() {
+    this.stockService
+      .getQuote(this.selectedStock.symbol)
+      .subscribe((res: SentimentDetail) => {
+        this.stockQuotesListObj = res;
+        this.stockQuotesListObj['stockName'] = this.selectedStock.description;
+        this.stockQuotesListObj['symbol'] = this.selectedStock.symbol;
+        this.saveToLocalStorage();
+      });
   }
 
-  addStockToList() {
-    var stocksList = [];
-    stocksList = JSON.parse(localStorage.getItem('userStocks')) || [];
-
-    stocksList.push(this.selectedStock);
-    localStorage.setItem('userStocks', JSON.stringify(stocksList));
-
-    console.log(localStorage);
-  }
-
-  selectStock(stock) {
-    // this.showSearchList = false;
-    this.selectedStock = stock;
+  saveToLocalStorage() {
+    let stockQuotesListArrTemp =
+      JSON.parse(localStorage.getItem('userStocks')) || [];
+    stockQuotesListArrTemp.push(this.stockQuotesListObj);
+    localStorage.setItem('userStocks', JSON.stringify(stockQuotesListArrTemp));
+    this.stockQuotesListArr =
+      JSON.parse(localStorage.getItem('userStocks')) || [];
+    this.stocksSearchList = [];
+    this.selectedStock = null;
   }
 }

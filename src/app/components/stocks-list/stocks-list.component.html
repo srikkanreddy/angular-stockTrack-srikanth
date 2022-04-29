@@ -1,1 +1,27 @@
 Stock List Component
+
+<div>
+  <div *ngFor = "let item of userStcoks">
+    <h3>{{item.stockName}}</h3>
+    <div>
+      <span>Change today:{{item.d}}</span>
+      <span>Opening price:{{item.o}}</span>
+    </div>
+    <div>
+    <span>Current price:{{item.c}}</span>
+    <span>High price:{{item.h}}</span>
+  </div>
+  <div ><button
+    class="btn btn-outline-secondary"
+    type="button"
+    id="button-addon3"
+    (click)="goToSentiment()"
+  >
+    Go to social sentiment details
+  </button>
+
+  </div>
+
+  </div>
+
+</div>

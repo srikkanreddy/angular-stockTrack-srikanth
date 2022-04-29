@@ -2,32 +2,35 @@
   <div class="card-body">
     <h5>Enter the symbol of a stock to track (i.e., AAPL, TSLA, GOOGL)</h5>
     <div class="input-group mb-3">
-      <input type="text" [(ngModel)]="stockName" (keyup)="searchStock()" />
+      <input
+        type="text"
+        [(ngModel)]="stockName"
+        (keyup)="searchStock()"
+        placeholder="Please Enter Stock "
+      />
       <button
-        class="btn btn-outline-secondary"
+        [disabled]="!selectedStock"
+        class="btn btn-outline-secondary, disabledbtn"
         type="button"
         id="button-addon2"
-        (click)="addStockToList()"
+        (click)="getStockQuotedetails()"
       >
         Track Stock
       </button>
     </div>
-    <ng-container *ngIf="stocksSearchList?.length > 0 && showSearchList">
-      <!-- <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="showSearchList = !showSearchList"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button> -->
+    <ng-container *ngIf="stocksSearchList?.length > 0">
+      <p>Select a stock:</p>
       <ul>
         <li *ngFor="let stock of stocksSearchList">
-          <p style="cursor: pointer" (click)="selectStock(stock)">
+          <p style="cursor: pointer" (click)="selectedStock = stock">
             {{ stock?.displaySymbol }}
           </p>
         </li>
       </ul>
     </ng-container>
   </div>
+</div>
+<div>
+  <app-stocks-list #stockList [userStcoks]="stockQuotesListArr">
+  </app-stocks-list>
 </div>

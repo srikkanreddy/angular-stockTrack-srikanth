@@ -1,4 +1,4 @@
-export interface SentimentDetail {
+export interface QuoteDetail {
   c: number; //currentPrice
   d: number; //change
   dp: number; //percentageChange
@@ -6,6 +6,5 @@ export interface SentimentDetail {
   l: number; //lowPriceofDay
   o: number; //openPriceofDay
   pc: number; //previousClosePrice
-  stockName: string; //stock description
-  symbol: string; //stock symbol
+  stockName:string; //stockname from searchAPI
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { QuoteDetail } from '../../models/quote.model';
 
 @Component({
   selector: 'app-stocks-list',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stocks-list.component.css']
 })
 export class StocksListComponent implements OnInit {
+  @Input() userStcoks:QuoteDetail [];
 
   constructor() { }
 
   ngOnInit() {
+  }
+  goToSentiment(){
+
   }
 
 }
