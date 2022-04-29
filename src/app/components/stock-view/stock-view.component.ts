@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StockService } from '../../services/stock.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-stock-view',
@@ -20,25 +20,21 @@ export class StockViewComponent implements OnInit {
     this.route.params.subscribe(
       (pramas) => (this.symbolStock = pramas['symbol'])
     );
-    console.log('last month first date');
-    const lastmonthlastdate = moment()
-      .subtract(1, 'months')
+    this.from = moment(new Date())
+      .subtract(2, 'months')
       .startOf('month')
-      .format('DD-MM-YYYY');
-    console.log(lastmonthlastdate);
-
-    console.log('lastmonth last date');
-    const lastmonthfirstdate = moment()
-      .subtract(1, 'months')
-      .endOf('month')
-      .format('DD-MM-YYYY');
-    console.log(lastmonthfirstdate);
-    // this.stockService
-    //   .getInsiderSentiment(this.symbolStock, new Date().toString(), '')
-    //   .subscribe((resp) => {
-    //     console.log(resp);
-    //   });
+      .format('YYYY-MM-DD');
+    this.to = moment(new Date()).endOf('month').format('YYYY-MM-DD');
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.from);
+    console.log(this.to);
+
+    this.stockService
+      .getInsiderSentiment(this.symbolStock, this.from, '')
+      .subscribe((resp) => {
+        console.log(resp);
+      });
+  }
 }
