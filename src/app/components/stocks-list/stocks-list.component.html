@@ -12,14 +12,14 @@ Stock List Component
       <span>High price:{{ item.h }}</span>
     </div>
     <div>
-      <a
+      <button
         class="btn btn-outline-secondary"
         type="button"
         id="button-addon3"
-        [routerLink]="['sentiment', item.symbol]"
+        (click)="redirectToStockSentiment(item.stockName, item.symbol)"
       >
         Go to social sentiment details
-      </a>
+      </button>
     </div>
   </div>
 </div>

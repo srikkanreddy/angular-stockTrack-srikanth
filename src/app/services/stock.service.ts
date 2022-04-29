@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { insiderSentimentDetail } from '../models/insiderSentiment.model';
+import { InsiderSentimentDetail } from '../models/insiderSentiment.model';
 import { SentimentDetail } from '../models/sentiment.model';
 import { StockDetail } from '../models/stock.model';
 import { ApiService } from '../services/api.service';
@@ -8,6 +8,7 @@ import { ApiService } from '../services/api.service';
 @Injectable()
 export class StockService {
   readonly token = 'bu4f8kn48v6uehqi3cqg';
+  stockName: string;
   constructor(private apiService: ApiService) {}
 
   getQuote(stockSymbol: string): Observable<SentimentDetail> {
@@ -24,7 +25,7 @@ export class StockService {
     stockSymbol: string,
     from: string,
     to: string
-  ): Observable<insiderSentimentDetail[]> {
+  ): Observable<InsiderSentimentDetail> {
     return this.apiService.get(
       `/stock/insider-sentiment?symbol=${stockSymbol}&from=${from}&to=${to}&token=${this.token}`
     );

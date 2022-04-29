@@ -16,6 +16,7 @@
     "@angular/router": "^13.3.5",
     "@ng-bootstrap/ng-bootstrap": "^12.1.0",
     "@popperjs/core": "^2.11.5",
+    "fortawesome/angular-fontawesome": "*",
     "moment": "^2.29.3",
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StockService } from '../../services/stock.service';
 import moment from 'moment';
+import { InsiderSentimentDetail } from '../../models/insiderSentiment.model';
 
 @Component({
   selector: 'app-stock-view',
@@ -12,29 +13,37 @@ export class StockViewComponent implements OnInit {
   symbolStock: string;
   from: string;
   to: string;
-
+  stocksSentimentList: InsiderSentimentDetail[];
+  stockName: string;
   constructor(
     private route: ActivatedRoute,
     private stockService: StockService
   ) {
-    this.route.params.subscribe(
-      (pramas) => (this.symbolStock = pramas['symbol'])
-    );
+    this.route.params.subscribe((pramas) => {
+      this.symbolStock = pramas['symbol'];
+    });
     this.from = moment(new Date())
-      .subtract(2, 'months')
+      .subtract(3, 'months')
       .startOf('month')
       .format('YYYY-MM-DD');
-    this.to = moment(new Date()).endOf('month').format('YYYY-MM-DD');
+    this.to = moment(new Date())
+      .subtract(1, 'months')
+      .endOf('month')
+      .format('YYYY-MM-DD');
   }
 
   ngOnInit() {
-    console.log(this.from);
-    console.log(this.to);
-
+    this.stockName = this.stockService.stockName;
     this.stockService
-      .getInsiderSentiment(this.symbolStock, this.from, '')
-      .subscribe((resp) => {
-        console.log(resp);
+      .getInsiderSentiment(this.symbolStock, this.from, this.to)
+      .subscribe((resp: any) => {
+        if (resp?.data) {
+          resp.data.forEach((stock) => {
+            stock.monthName = moment(stock).format('MMMM');
+          });
+        }
+        this.stocksSentimentList = resp?.data;
+        console.log(this.stocksSentimentList);
       });
   }
 }

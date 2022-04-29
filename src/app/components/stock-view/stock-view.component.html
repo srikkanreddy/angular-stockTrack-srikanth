@@ -1,1 +1,21 @@
-Stock View Works!
+{{ stockName }}
+<div *ngIf="stocksSentimentList">
+  <div class="row">
+    <div *ngFor="let stock of stocksSentimentList" class="col-md-4">
+      {{ stock.monthName }}
+      {{ stock.change }}
+      {{ stock.mspr }}
+      <span *ngIf="stock.change >= 0">positive </span>
+      <span *ngIf="stock.change < 0">negative </span>
+    </div>
+  </div>
+
+  <a
+    class="btn btn-outline-secondary"
+    type="button"
+    id="button-addon3"
+    routerLink="/dashboard"
+  >
+    Back to List of stocks
+  </a>
+</div>
