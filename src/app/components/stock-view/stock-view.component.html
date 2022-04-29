@@ -5,9 +5,12 @@
       {{ stock.monthName }}
       {{ stock.change }}
       {{ stock.mspr }}
-      <span *ngIf="stock.change >= 0">positive </span>
-      <span *ngIf="stock.change < 0">negative </span>
-      <span [innerHtml]="&#129045" > </span>
+      <p *ngIf="stock.change >= 0" [innerHtml]="upArrow"></p>
+      <p
+        *ngIf="stock.change < 0"
+        style="{background-color: red; color: red}"
+        [innerHtml]="downArrow"
+      ></p>
     </div>
   </div>
 
@@ -15,7 +18,7 @@
     class="btn btn-outline-secondary"
     type="button"
     id="button-addon3"
-    routerLink="/dashboard"
+    [routerLink] = "['/dashboard']"
   >
     Back to List of stocks
   </a>

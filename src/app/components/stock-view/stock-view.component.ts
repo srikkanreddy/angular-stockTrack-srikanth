@@ -15,6 +15,9 @@ export class StockViewComponent implements OnInit {
   to: string;
   stocksSentimentList: InsiderSentimentDetail[];
   stockName: string;
+  upArrow = '\u{2B06}';
+  downArrow = '\u{2B07}';
+
   constructor(
     private route: ActivatedRoute,
     private stockService: StockService
