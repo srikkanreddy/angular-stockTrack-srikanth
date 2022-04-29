@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { QuoteDetail } from '../../models/quote.model';
 import { SentimentDetail } from '../../models/sentiment.model';
 import { StockDetail } from '../../models/stock.model';
 import { StockService } from '../../services/stock.service';
@@ -54,6 +53,7 @@ export class AddStockComponent implements OnInit {
     let stockQuotesListArrTemp =
       JSON.parse(localStorage.getItem('userStocks')) || [];
     stockQuotesListArrTemp.push(this.stockQuotesListObj);
+    stockQuotesListArrTemp = stockQuotesListArrTemp.reverse();
     localStorage.setItem('userStocks', JSON.stringify(stockQuotesListArrTemp));
     this.stockQuotesListArr =
       JSON.parse(localStorage.getItem('userStocks')) || [];

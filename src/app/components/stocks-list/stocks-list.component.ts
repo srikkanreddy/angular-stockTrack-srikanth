@@ -1,20 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { QuoteDetail } from '../../models/quote.model';
+import { SentimentDetail } from '../../models/sentiment.model';
 
 @Component({
   selector: 'app-stocks-list',
   templateUrl: './stocks-list.component.html',
-  styleUrls: ['./stocks-list.component.css']
+  styleUrls: ['./stocks-list.component.css'],
 })
 export class StocksListComponent implements OnInit {
-  @Input() userStcoks:QuoteDetail [];
+  @Input() userStcoks: SentimentDetail[];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-  goToSentiment(){
-
-  }
-
+  ngOnInit() {}
 }
