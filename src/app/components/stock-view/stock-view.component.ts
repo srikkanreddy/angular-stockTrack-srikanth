@@ -39,7 +39,7 @@ export class StockViewComponent implements OnInit {
       .subscribe((resp: any) => {
         if (resp?.data) {
           resp.data.forEach((stock) => {
-            stock.monthName = moment(stock).format('MMMM');
+            stock.monthName = moment(stock.month, 'MM').format('MMMM');
           });
         }
         this.stocksSentimentList = resp?.data;

@@ -7,6 +7,7 @@
       {{ stock.mspr }}
       <span *ngIf="stock.change >= 0">positive </span>
       <span *ngIf="stock.change < 0">negative </span>
+      <span [innerHtml]="&#129045" > </span>
     </div>
   </div>
 
