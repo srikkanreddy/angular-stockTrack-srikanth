@@ -16,13 +16,12 @@ export class AddStockComponent implements OnInit {
   selectedStock: StockDetail = null;
   stocksList: SentimentDetail[];
   stockQuotesListObj: SentimentDetail;
-  stockQuotesListArr: SentimentDetail[];
+  stockQuotesList: SentimentDetail[];
 
   constructor(private stockService: StockService) {}
 
   ngOnInit() {
-    this.stockQuotesListArr =
-      JSON.parse(localStorage.getItem('userStocks')) || [];
+    this.stockQuotesList = this.stockService.getUserStocks();
   }
 
   searchStock() {
@@ -50,13 +49,8 @@ export class AddStockComponent implements OnInit {
   }
 
   saveToLocalStorage() {
-    let stockQuotesListArrTemp =
-      JSON.parse(localStorage.getItem('userStocks')) || [];
-    stockQuotesListArrTemp.push(this.stockQuotesListObj);
-    stockQuotesListArrTemp = stockQuotesListArrTemp.reverse();
-    localStorage.setItem('userStocks', JSON.stringify(stockQuotesListArrTemp));
-    this.stockQuotesListArr =
-      JSON.parse(localStorage.getItem('userStocks')) || [];
+    this.stockService.saveUserStocks(this.stockQuotesListObj);
+    this.stockQuotesList = this.stockService.getUserStocks();
     this.stocksSearchList = [];
     this.selectedStock = null;
   }

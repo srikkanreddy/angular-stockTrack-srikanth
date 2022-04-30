@@ -11,6 +11,25 @@ export class StockService {
   stockName: string;
   constructor(private apiService: ApiService) {}
 
+  getUserStocks() {
+    return JSON.parse(localStorage.getItem('userStocks')) || [];
+  }
+
+  saveUserStocks(stockObj) {
+    let stockQuotesList = this.getUserStocks();
+    stockQuotesList.push(stockObj);
+    stockQuotesList = stockQuotesList.reverse();
+    localStorage.setItem('userStocks', JSON.stringify(stockQuotesList));
+  }
+
+  deleteStock(stockObj) {
+    let userStocksTemp = this.getUserStocks();
+    userStocksTemp = userStocksTemp.filter(
+      (data) => data.symbol != stockObj.symbol
+    );
+    localStorage.setItem('userStocks', JSON.stringify(userStocksTemp));
+  }
+
   getQuote(stockSymbol: string): Observable<SentimentDetail> {
     return this.apiService.get(
       `/quote?symbol=${stockSymbol}&token=${this.token}`

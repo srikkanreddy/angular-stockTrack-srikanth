@@ -1,25 +1,42 @@
-Stock List Component
-
-<div>
-  <div *ngFor="let item of userStcoks">
-    <h3>{{ item.stockName }}</h3>
-    <div>
-      <span>Change today:{{ item.d }}</span>
-      <span>Opening price:{{ item.o }}</span>
+<div
+  class="card"
+  style="width: 90%; margin: 20px"
+  *ngFor="let item of userStcoks"
+>
+  <div class="card-body">
+    <h5 class="card-title">
+      <div class="row">
+        <div class="col-10">{{ item.stockName }}&nbsp;({{ item.symbol }})</div>
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn-close"
+            (click)="removeStock(item)"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    </h5>
+    <div class="card-text">
+      <div class="container">
+        <div class="row" style="padding:  10px 0">
+          <div class="col">Change today: {{ item.d }}</div>
+          <div class="col">Opening price: {{ item.o }}</div>
+        </div>
+        <div class="row">
+          <div class="col">Current price: {{ item.c }}</div>
+          <div class="col">High price: {{ item.h }}</div>
+        </div>
+      </div>
     </div>
-    <div>
-      <span>Current price:{{ item.c }}</span>
-      <span>High price:{{ item.h }}</span>
-    </div>
-    <div>
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        id="button-addon3"
-        (click)="redirectToStockSentiment(item.stockName, item.symbol)"
-      >
-        Go to social sentiment details
-      </button>
-    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      id="button-addon3"
+      style="margin:15px"
+      (click)="redirectToStockSentiment(item.stockName, item.symbol)"
+    >
+      Go to social sentiment details
+    </button>
   </div>
 </div>

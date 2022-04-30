@@ -6,32 +6,55 @@
         type="text"
         [(ngModel)]="stockName"
         (keyup)="searchStock()"
-        placeholder="Please Enter Stock "
+        placeholder="Search"
       />
       &nbsp;
       <button
         [disabled]="!selectedStock"
-        class="btn btn-outline-secondary, disabledbtn"
+        class="btn"
+        [ngClass]="{
+          'btn-outline-secondary': !selectedStock,
+          'btn-dark': selectedStock
+        }"
         type="button"
-        id="button-addon2"
         (click)="getStockQuotedetails()"
       >
         Track Stock
       </button>
     </div>
-    <ng-container *ngIf="stocksSearchList?.length > 0">
-      <p>Select a stock:</p>
-      <ul>
-        <li *ngFor="let stock of stocksSearchList">
-          <p style="cursor: pointer" (click)="selectedStock = stock">
-            {{ stock?.displaySymbol }}
-          </p>
-        </li>
-      </ul>
-    </ng-container>
+
+    <div
+      *ngIf="stocksSearchList?.length > 0"
+      style="height:300px; overflow:scroll;"
+      class="border border-2"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-4"><strong> Symbol </strong></div>
+          <div class="col-8"><strong>Description</strong></div>
+        </div>
+      </div>
+      <div class="container">
+        <div
+          style="cursor: pointer;"
+          (click)="selectedStock = stock"
+          class="row"
+          *ngFor="let stock of stocksSearchList; let i = index"
+        >
+          <div
+            class="row"
+            [ngClass]="{
+              'bg-secondary text-white': stock?.symbol == selectedStock?.symbol
+            }"
+          >
+            <div class="col-4">{{ stock?.displaySymbol }}</div>
+            <div class="col-8">{{ stock?.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div>
-  <app-stocks-list #stockList [userStcoks]="stockQuotesListArr">
-  </app-stocks-list>
+  <app-stocks-list #stockList [userStcoks]="stockQuotesList"> </app-stocks-list>
 </div>

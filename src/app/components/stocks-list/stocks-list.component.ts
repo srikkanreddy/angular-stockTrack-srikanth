@@ -10,6 +10,7 @@ import { StockService } from '../../services/stock.service';
 })
 export class StocksListComponent implements OnInit {
   @Input() userStcoks: SentimentDetail[];
+  closeIcon = '\u{00D7}';
 
   constructor(private stockService: StockService, private router: Router) {}
 
@@ -18,5 +19,10 @@ export class StocksListComponent implements OnInit {
   redirectToStockSentiment(stockName, symbol) {
     this.stockService.stockName = stockName;
     this.router.navigate(['/sentiment', symbol]);
+  }
+
+  removeStock(stock: SentimentDetail) {
+    this.stockService.deleteStock(stock);
+    this.userStcoks = this.stockService.getUserStocks();
   }
 }
