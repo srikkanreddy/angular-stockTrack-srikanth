@@ -18,7 +18,7 @@ export class StockService {
     SentimentDetail[]
   >([]);
 
-showLoader:boolean = false;
+  showLoader: boolean = false;
   constructor(private apiService: ApiService) {
     this.getUserStocks();
   }

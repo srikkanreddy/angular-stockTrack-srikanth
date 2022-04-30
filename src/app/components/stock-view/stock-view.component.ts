@@ -42,16 +42,21 @@ export class StockViewComponent implements OnInit {
     this.stockName = this.stockService.stockName;
     this.stockService
       .getInsiderSentiment(this.stockSymbol, this.from, this.to)
-      .subscribe((resp: InsiderSentimentDetail[]) => {
-        if (resp) {
-          resp.forEach((stock) => {
-            stock.monthName = moment(stock.month, 'MM').format('MMMM');
-          });
-          this.stocksSentimentList = resp;
-          this.showLoader = false;
-        } else {
+      .subscribe(
+        (resp: InsiderSentimentDetail[]) => {
+          if (resp) {
+            resp.forEach((stock) => {
+              stock.monthName = moment(stock.month, 'MM').format('MMMM');
+            });
+            this.stocksSentimentList = resp;
+            this.showLoader = false;
+          } else {
+            this.showLoader = false;
+          }
+        },
+        (errors) => {
           this.showLoader = false;
         }
-      });
+      );
   }
 }

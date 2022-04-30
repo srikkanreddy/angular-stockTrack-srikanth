@@ -2,7 +2,6 @@
   float: right;
 }
 
-
 span.upArrow {
-  content: "\2B06";
+  content: '\2B06';
 }

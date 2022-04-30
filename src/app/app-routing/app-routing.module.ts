@@ -4,7 +4,7 @@ import { DashboardComponent } from '../components/dashboard/dashboard.component'
 import { StockViewComponent } from '../components/stock-view/stock-view.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'sentiment/:symbol', component: StockViewComponent },
 ];

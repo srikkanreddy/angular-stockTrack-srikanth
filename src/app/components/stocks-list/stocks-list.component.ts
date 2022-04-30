@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Icons } from '../../models/icons.model';
 import { SentimentDetail } from '../../models/sentiment.model';
 import { StockService } from '../../services/stock.service';
@@ -12,6 +13,7 @@ import { StockService } from '../../services/stock.service';
 export class StocksListComponent implements OnInit {
   stockQuotesList: SentimentDetail[];
   icons: Icons;
+  subscription: Subscription;
 
   constructor(private stockService: StockService, private router: Router) {
     this.icons = this.stockService.icons;
@@ -21,11 +23,14 @@ export class StocksListComponent implements OnInit {
     this.getUserStocks();
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   getUserStocks() {
-    this.stockService.userStocksLocal$.subscribe(
+    this.subscription = this.stockService.userStocksLocal$.subscribe(
       (stockQuotesList: SentimentDetail[]) => {
         this.stockQuotesList = stockQuotesList;
-        // console.log(this.stockQuotesList);
       }
     );
   }
