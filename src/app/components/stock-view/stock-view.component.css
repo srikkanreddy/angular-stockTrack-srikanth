@@ -1,0 +1,18 @@
+.sentiment-block {
+  width: 93%;
+  margin: 20px;
+}
+
+.green {
+  font-size: 72px;
+  color: green;
+}
+
+.red {
+  font-size: 72px;
+  color: red;
+}
+
+.back-button {
+  margin-left: 20px;
+}

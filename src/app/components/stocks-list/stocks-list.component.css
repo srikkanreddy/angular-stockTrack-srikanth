@@ -1,3 +1,8 @@
 .right {
   float: right;
 }
+
+
+span.upArrow {
+  content: "\2B06";
+}

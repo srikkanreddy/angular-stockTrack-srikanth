@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SentimentDetail } from '../../models/sentiment.model';
-import { StockDetail } from '../../models/stock.model';
+import { SearchResult } from '../../models/stock.model';
 import { StockService } from '../../services/stock.service';
 import { debounceTime } from 'rxjs/operators';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 //import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -10,48 +11,75 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: './add-stock.component.html',
   styleUrls: ['./add-stock.component.css'],
 })
-export class AddStockComponent implements OnInit {
-  stockName: string;
-  stocksSearchList: StockDetail[];
-  selectedStock: StockDetail = null;
-  stocksList: SentimentDetail[];
-  stockQuotesListObj: SentimentDetail;
+export class AddStockComponent implements OnInit, OnDestroy {
+  searchText: string;
+  selectedStock: SearchResult = null;
   stockQuotesList: SentimentDetail[];
+  dashboardTitle: string;
+  modelChanged = new Subject<string>();
+  searchResult$: Observable<SearchResult[]>;
+  subscription: Subscription;
 
-  constructor(private stockService: StockService) {}
-
-  ngOnInit() {
-    this.stockQuotesList = this.stockService.getUserStocks();
+  constructor(private stockService: StockService) {
+    this.getUserStocks();
+    this.modelChanged.pipe(debounceTime(100)).subscribe(() => {
+      if (!this.searchText) {
+        this.searchResult$ = of([]);
+        this.selectedStock = null;
+      } else {
+        this.searchResult$ = this.stockService.searchSymbol(this.searchText);
+      }
+    });
   }
 
-  searchStock() {
-    if (this.stockName && this.stockName != '') {
-      this.stockService.searchSymbol(this.stockName).subscribe((resp: any) => {
-        if (this.stockName) {
-          this.stocksSearchList = resp?.result;
-        }
-      });
-    } else {
-      this.stocksSearchList = [];
-      this.selectedStock = null;
-    }
+  changed(event) {
+    this.modelChanged.next(event);
+  }
+
+  ngOnInit() {
+    this.dashboardTitle =
+      'Enter the symbol of a stock to track (i.e., AAPL, TSLA, GOOGL)';
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  getUserStocks() {
+    this.subscription = this.stockService.userStocksLocal$.subscribe(
+      (stockQuotesList) => {
+        this.stockQuotesList = stockQuotesList;
+      }
+    );
   }
 
   getStockQuotedetails() {
-    this.stockService
-      .getQuote(this.selectedStock.symbol)
-      .subscribe((res: SentimentDetail) => {
-        this.stockQuotesListObj = res;
-        this.stockQuotesListObj['stockName'] = this.selectedStock.description;
-        this.stockQuotesListObj['symbol'] = this.selectedStock.symbol;
-        this.saveToLocalStorage();
-      });
+    let index = this.stockQuotesList.findIndex(
+      (x) => x.symbol === this.selectedStock.symbol
+    );
+    if (index == -1) {
+      this.stockService.getQuote(this.selectedStock.symbol).subscribe(
+        (res: SentimentDetail) => {
+          if (res) {
+            res['stockName'] = this.selectedStock.description;
+            res['symbol'] = this.selectedStock.symbol;
+            this.saveToLocalStorage(res);
+          }
+        },
+        (errors) => {
+          window.alert(errors?.error?.error);
+        }
+      );
+    } else {
+      window.alert('Selected stock already exits in your list');
+    }
   }
 
-  saveToLocalStorage() {
-    this.stockService.saveUserStocks(this.stockQuotesListObj);
-    this.stockQuotesList = this.stockService.getUserStocks();
-    this.stocksSearchList = [];
+  saveToLocalStorage(stockQuotesListObj: SentimentDetail) {
+    this.stockService.saveUserStocks(stockQuotesListObj);
+    this.searchResult$ = of([]);
     this.selectedStock = null;
+    this.searchText = null;
+    window.alert('Stock added to your list successfully');
   }
 }

@@ -1,3 +1,20 @@
 disabledbtn {
   background: #dddddd;
 }
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.search-block {
+  width: 96%;
+  margin: 20px;
+}
+
+.search-result {
+  height: 300px;
+  overflow: scroll;
+  cursor: pointer;
+}

@@ -1,33 +1,48 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import { Icons } from '../models/icons.model';
 import { InsiderSentimentDetail } from '../models/insiderSentiment.model';
 import { SentimentDetail } from '../models/sentiment.model';
-import { StockDetail } from '../models/stock.model';
+import { SearchResult } from '../models/stock.model';
 import { ApiService } from '../services/api.service';
 
 @Injectable()
 export class StockService {
-  readonly token = 'bu4f8kn48v6uehqi3cqg';
+  private readonly token = 'bu4f8kn48v6uehqi3cqg';
+  readonly icons: Icons = {
+    downArrow: '\u{21E9}',
+    upArrow: '\u{21E7}',
+  };
   stockName: string;
-  constructor(private apiService: ApiService) {}
+  userStocksLocal$: BehaviorSubject<SentimentDetail[]> = new BehaviorSubject<
+    SentimentDetail[]
+  >([]);
+  constructor(private apiService: ApiService) {
+    this.getUserStocks();
+  }
 
-  getUserStocks() {
+  private userStocksLocal() {
     return JSON.parse(localStorage.getItem('userStocks')) || [];
   }
 
-  saveUserStocks(stockObj) {
-    let stockQuotesList = this.getUserStocks();
-    stockQuotesList.push(stockObj);
-    stockQuotesList = stockQuotesList.reverse();
-    localStorage.setItem('userStocks', JSON.stringify(stockQuotesList));
+  getUserStocks(): void {
+    this.userStocksLocal$.next(this.userStocksLocal());
   }
 
-  deleteStock(stockObj) {
-    let userStocksTemp = this.getUserStocks();
+  saveUserStocks(stockObj): void {
+    let stockQuotesList = this.userStocksLocal();
+    stockQuotesList.unshift(stockObj);
+    localStorage.setItem('userStocks', JSON.stringify(stockQuotesList));
+    this.getUserStocks();
+  }
+
+  deleteStock(stockObj): void {
+    let userStocksTemp = this.userStocksLocal();
     userStocksTemp = userStocksTemp.filter(
       (data) => data.symbol != stockObj.symbol
     );
     localStorage.setItem('userStocks', JSON.stringify(userStocksTemp));
+    this.getUserStocks();
   }
 
   getQuote(stockSymbol: string): Observable<SentimentDetail> {
@@ -36,17 +51,21 @@ export class StockService {
     );
   }
 
-  searchSymbol(stockSymbol: string): Observable<StockDetail[]> {
-    return this.apiService.get(`/search?q=${stockSymbol}&token=${this.token}`);
+  searchSymbol(stockSymbol: string): Observable<SearchResult[]> {
+    return this.apiService
+      .get(`/search?q=${stockSymbol}&token=${this.token}`)
+      .pipe(map((data) => data.result));
   }
 
   getInsiderSentiment(
     stockSymbol: string,
     from: string,
     to: string
-  ): Observable<InsiderSentimentDetail> {
-    return this.apiService.get(
-      `/stock/insider-sentiment?symbol=${stockSymbol}&from=${from}&to=${to}&token=${this.token}`
-    );
+  ): Observable<InsiderSentimentDetail[]> {
+    return this.apiService
+      .get(
+        `/stock/insider-sentiment?symbol=${stockSymbol}&from=${from}&to=${to}&token=${this.token}`
+      )
+      .pipe(map((res) => res.data));
   }
 }

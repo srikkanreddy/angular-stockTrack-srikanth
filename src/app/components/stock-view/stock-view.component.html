@@ -1,43 +1,45 @@
-<div
-  *ngIf="stocksSentimentList"
-  class="card border border-2"
-  style="width:93%; margin:20px"
->
+<div class="card border border-2 sentiment-block">
   <div class="card-body">
-    <h5 class="card-title">{{ stockName }}</h5>
+    <h5 class="card-title">{{ stockName }} ({{ stockSymbol }})</h5>
     <div class="card-text">
-      <div class="row">
+      <div *ngIf="stocksSentimentList?.length > 0; else noData" class="row">
         <div *ngFor="let stock of stocksSentimentList" class="col-4">
           <div class="row">
-            <div class="col-8">
+            <div class="col-6">
               {{ stock.monthName | uppercase }} <br />
               <label>Change:</label> {{ stock.change }} <br /><label
                 >MSPR:</label
               >
               {{ stock.mspr | number: '.2-2' }}
             </div>
-            <div class="col-4">
+            <div
+              [ngClass]="{ green: stock.change >= 0, red: stock.change < 0 }"
+              class="col-4"
+            >
               <span
                 *ngIf="stock.change >= 0"
-                [innerHtml]="upArrow"
-                style="font-size: 16px"
+                [innerHtml]="icons?.upArrow"
               ></span>
-              <span *ngIf="stock.change < 0" [innerHtml]="downArrow"></span>
+              <span
+                *ngIf="stock.change < 0"
+                [innerHtml]="icons?.downArrow"
+              ></span>
             </div>
           </div>
         </div>
       </div>
+      <ng-template #noData>
+        <label>No Data Available</label>
+      </ng-template>
     </div>
   </div>
 </div>
 
-
 <a
-  class="btn btn-dark"
+  class="btn btn-dark back-button"
   type="button"
   id="button-addon3"
   [routerLink]="['/dashboard']"
-  style="margin:20px"
 >
   Back to List of stocks
 </a>

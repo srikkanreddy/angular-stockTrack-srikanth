@@ -1,4 +1,4 @@
-export interface StockDetail {
+export interface SearchResult {
   description: string;
   displaySymbol: string;
   symbol: string;

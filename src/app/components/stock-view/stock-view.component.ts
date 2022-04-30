@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StockService } from '../../services/stock.service';
 import moment from 'moment';
 import { InsiderSentimentDetail } from '../../models/insiderSentiment.model';
+import { Icons } from '../../models/icons.model';
 
 @Component({
   selector: 'app-stock-view',
@@ -10,20 +11,19 @@ import { InsiderSentimentDetail } from '../../models/insiderSentiment.model';
   styleUrls: ['./stock-view.component.css'],
 })
 export class StockViewComponent implements OnInit {
-  symbolStock: string;
+  stockSymbol: string;
   from: string;
   to: string;
   stocksSentimentList: InsiderSentimentDetail[];
   stockName: string;
-  upArrow = '\u{2B06}';
-  downArrow = '\u{2B07}';
+  icons: Icons;
 
   constructor(
     private route: ActivatedRoute,
     private stockService: StockService
   ) {
     this.route.params.subscribe((pramas) => {
-      this.symbolStock = pramas['symbol'];
+      this.stockSymbol = pramas['symbol'];
     });
     this.from = moment(new Date())
       .subtract(3, 'months')
@@ -33,20 +33,20 @@ export class StockViewComponent implements OnInit {
       .subtract(1, 'months')
       .endOf('month')
       .format('YYYY-MM-DD');
+    this.icons = this.stockService.icons;
   }
 
   ngOnInit() {
     this.stockName = this.stockService.stockName;
     this.stockService
-      .getInsiderSentiment(this.symbolStock, this.from, this.to)
-      .subscribe((resp: any) => {
-        if (resp?.data) {
-          resp.data.forEach((stock) => {
+      .getInsiderSentiment(this.stockSymbol, this.from, this.to)
+      .subscribe((resp: InsiderSentimentDetail[]) => {
+        if (resp) {
+          resp.forEach((stock) => {
             stock.monthName = moment(stock.month, 'MM').format('MMMM');
           });
         }
-        this.stocksSentimentList = resp?.data;
-        console.log(this.stocksSentimentList);
+        this.stocksSentimentList = resp;
       });
   }
 }

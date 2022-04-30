@@ -1,44 +1,45 @@
-<div class="card">
+<div class="card search-block">
   <div class="card-body">
-    <h5>Enter the symbol of a stock to track (i.e., AAPL, TSLA, GOOGL)</h5>
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        [(ngModel)]="stockName"
-        (keyup)="searchStock()"
-        placeholder="Search"
-      />
-      &nbsp;
-      <button
-        [disabled]="!selectedStock"
-        class="btn"
-        [ngClass]="{
-          'btn-outline-secondary': !selectedStock,
-          'btn-dark': selectedStock
-        }"
-        type="button"
-        (click)="getStockQuotedetails()"
-      >
-        Track Stock
-      </button>
+    <label class="dashboard-title">{{ dashboardTitle }}</label>
+
+    <div class="row">
+      <div class="col-6">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="searchText"
+          (ngModelChange)="changed($event)"
+          placeholder="Search"
+        />
+      </div>
+      <div class="col-4">
+        <button
+          [disabled]="!selectedStock"
+          class="btn"
+          [ngClass]="{
+            'btn-outline-secondary': !selectedStock,
+            'btn-dark': selectedStock
+          }"
+          type="button"
+          (click)="getStockQuotedetails()"
+        >
+          Track Stock
+        </button>
+      </div>
     </div>
 
-    <div
-      *ngIf="stocksSearchList?.length > 0"
-      style="height:300px; overflow:scroll;"
-      class="border border-2"
-    >
-      <div class="container">
+    <ng-container *ngIf="searchResult$ | async as stocksSearchList">
+      <div
+        *ngIf="stocksSearchList?.length > 0"
+        class="border border-2 search-result"
+      >
         <div class="row">
           <div class="col-4"><strong> Symbol </strong></div>
           <div class="col-8"><strong>Description</strong></div>
         </div>
-      </div>
-      <div class="container">
         <div
-          style="cursor: pointer;"
-          (click)="selectedStock = stock"
           class="row"
+          (click)="selectedStock = stock"
           *ngFor="let stock of stocksSearchList; let i = index"
         >
           <div
@@ -52,9 +53,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>
-<div>
-  <app-stocks-list #stockList [userStcoks]="stockQuotesList"> </app-stocks-list>
-</div>
+

@@ -1,7 +1,7 @@
 <div
   class="card"
-  style="width: 90%; margin: 20px"
-  *ngFor="let item of userStcoks"
+  style="width: 96%; margin: 20px"
+  *ngFor="let item of stockQuotesList"
 >
   <div class="card-body">
     <h5 class="card-title">
@@ -19,13 +19,29 @@
     </h5>
     <div class="card-text">
       <div class="container">
-        <div class="row" style="padding:  10px 0">
-          <div class="col">Change today: {{ item.d }}</div>
-          <div class="col">Opening price: {{ item.o }}</div>
-        </div>
         <div class="row">
-          <div class="col">Current price: {{ item.c }}</div>
-          <div class="col">High price: {{ item.h }}</div>
+          <div class="col-11">
+            <div class="row" style="padding:  10px 0">
+              <div class="col">Change today: {{ item.d }}</div>
+              <div class="col">Opening price: {{ item.o }}</div>
+            </div>
+            <div class="row">
+              <div class="col">Current price: {{ item.c }}</div>
+              <div class="col">High price: {{ item.h }}</div>
+            </div>
+          </div>
+          <div *ngIf="item.d" class="col-1">
+            <span
+              *ngIf="item.d >= 0"
+              [innerHtml]="icons?.upArrow"
+              style="font-size: 72px; color: green"
+            ></span>
+            <span
+              *ngIf="item.d < 0"
+              style="font-size: 72px; color: red"
+              [innerHtml]="icons?.downArrow"
+            ></span>
+          </div>
         </div>
       </div>
     </div>

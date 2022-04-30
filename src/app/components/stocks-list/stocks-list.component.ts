@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Icons } from '../../models/icons.model';
 import { SentimentDetail } from '../../models/sentiment.model';
 import { StockService } from '../../services/stock.service';
 
@@ -9,20 +10,33 @@ import { StockService } from '../../services/stock.service';
   styleUrls: ['./stocks-list.component.css'],
 })
 export class StocksListComponent implements OnInit {
-  @Input() userStcoks: SentimentDetail[];
-  closeIcon = '\u{00D7}';
+  stockQuotesList: SentimentDetail[];
+  icons: Icons;
 
-  constructor(private stockService: StockService, private router: Router) {}
+  constructor(private stockService: StockService, private router: Router) {
+    this.icons = this.stockService.icons;
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getUserStocks();
+  }
 
-  redirectToStockSentiment(stockName, symbol) {
+  getUserStocks() {
+    this.stockService.userStocksLocal$.subscribe(
+      (stockQuotesList: SentimentDetail[]) => {
+        this.stockQuotesList = stockQuotesList;
+        console.log(this.stockQuotesList);
+      }
+    );
+  }
+
+  redirectToStockSentiment(stockName: string, symbol: string) {
     this.stockService.stockName = stockName;
     this.router.navigate(['/sentiment', symbol]);
   }
 
   removeStock(stock: SentimentDetail) {
     this.stockService.deleteStock(stock);
-    this.userStcoks = this.stockService.getUserStocks();
+    window.alert('Stock removed from your list successfully');
   }
 }
