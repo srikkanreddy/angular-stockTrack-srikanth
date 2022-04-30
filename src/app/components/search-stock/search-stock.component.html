@@ -1,7 +1,11 @@
 <div class="card search-block">
   <div class="card-body">
     <label class="dashboard-title">{{ dashboardTitle }}</label>
-
+    <div *ngIf="searchText?.length > 5" class="row">
+      <div class="col-6">
+        <span class="note-text">Note: Please enter 1 - 5 characters </span>
+      </div>
+    </div>
     <div class="row">
       <div class="col-6">
         <input
@@ -56,4 +60,3 @@
     </ng-container>
   </div>
 </div>
-

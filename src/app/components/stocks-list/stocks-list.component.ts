@@ -25,7 +25,7 @@ export class StocksListComponent implements OnInit {
     this.stockService.userStocksLocal$.subscribe(
       (stockQuotesList: SentimentDetail[]) => {
         this.stockQuotesList = stockQuotesList;
-        console.log(this.stockQuotesList);
+        // console.log(this.stockQuotesList);
       }
     );
   }

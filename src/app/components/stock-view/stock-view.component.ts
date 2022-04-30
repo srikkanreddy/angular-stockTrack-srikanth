@@ -17,6 +17,7 @@ export class StockViewComponent implements OnInit {
   stocksSentimentList: InsiderSentimentDetail[];
   stockName: string;
   icons: Icons;
+  showLoader: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +38,7 @@ export class StockViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showLoader = true;
     this.stockName = this.stockService.stockName;
     this.stockService
       .getInsiderSentiment(this.stockSymbol, this.from, this.to)
@@ -45,8 +47,11 @@ export class StockViewComponent implements OnInit {
           resp.forEach((stock) => {
             stock.monthName = moment(stock.month, 'MM').format('MMMM');
           });
+          this.stocksSentimentList = resp;
+          this.showLoader = false;
+        } else {
+          this.showLoader = false;
         }
-        this.stocksSentimentList = resp;
       });
   }
 }

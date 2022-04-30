@@ -18,3 +18,9 @@ disabledbtn {
   overflow: scroll;
   cursor: pointer;
 }
+
+.note-text {
+  font-size: 12px;
+  color: red;
+  font-weight: bold;
+}

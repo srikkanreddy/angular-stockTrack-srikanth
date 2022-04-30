@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddStockComponent } from '../../components/add-stock/add-stock.component';
+import { AddStockComponent } from '../../components/search-stock/search-stock.component';
 import { StocksListComponent } from '../../components/stocks-list/stocks-list.component';
 
 @Component({

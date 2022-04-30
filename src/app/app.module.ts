@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AddStockComponent } from './components/add-stock/add-stock.component';
+import { AddStockComponent } from './components/search-stock/search-stock.component';
 import { StocksListComponent } from './components/stocks-list/stocks-list.component';
 import { StockViewComponent } from './components/stock-view/stock-view.component';
 import { StockService } from './services/stock.service';

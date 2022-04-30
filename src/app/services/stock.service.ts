@@ -17,6 +17,8 @@ export class StockService {
   userStocksLocal$: BehaviorSubject<SentimentDetail[]> = new BehaviorSubject<
     SentimentDetail[]
   >([]);
+
+showLoader:boolean = false;
   constructor(private apiService: ApiService) {
     this.getUserStocks();
   }

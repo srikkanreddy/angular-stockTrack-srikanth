@@ -2,35 +2,41 @@
   <div class="card-body">
     <h5 class="card-title">{{ stockName }} ({{ stockSymbol }})</h5>
     <div class="card-text">
-      <div *ngIf="stocksSentimentList?.length > 0; else noData" class="row">
-        <div *ngFor="let stock of stocksSentimentList" class="col-4">
-          <div class="row">
-            <div class="col-6">
-              {{ stock.monthName | uppercase }} <br />
-              <label>Change:</label> {{ stock.change }} <br /><label
-                >MSPR:</label
+      <ng-container *ngIf="!showLoader">
+        <div *ngIf="stocksSentimentList?.length > 0; else noData" class="row">
+          <div *ngFor="let stock of stocksSentimentList" class="col-4">
+            <div class="row">
+              <div class="col-6">
+                {{ stock.monthName | uppercase }} <br />
+                <label>Change:</label> {{ stock.change }} <br /><label
+                  >MSPR:</label
+                >
+                {{ stock.mspr | number: '.2-2' }}
+              </div>
+              <div
+                [ngClass]="{ green: stock.change >= 0, red: stock.change < 0 }"
+                class="col-4"
               >
-              {{ stock.mspr | number: '.2-2' }}
-            </div>
-            <div
-              [ngClass]="{ green: stock.change >= 0, red: stock.change < 0 }"
-              class="col-4"
-            >
-              <span
-                *ngIf="stock.change >= 0"
-                [innerHtml]="icons?.upArrow"
-              ></span>
-              <span
-                *ngIf="stock.change < 0"
-                [innerHtml]="icons?.downArrow"
-              ></span>
+                <span
+                  *ngIf="stock.change >= 0"
+                  [innerHtml]="icons?.upArrow"
+                ></span>
+                <span
+                  *ngIf="stock.change < 0"
+                  [innerHtml]="icons?.downArrow"
+                ></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
+
       <ng-template #noData>
-        <label>No Data Available</label>
+        <label class="no-data" >No Data Available</label>
       </ng-template>
+      <div>
+        <label class="loader" *ngIf="showLoader">Loading...</label>
+      </div>
     </div>
   </div>
 </div>

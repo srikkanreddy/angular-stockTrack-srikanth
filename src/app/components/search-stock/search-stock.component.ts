@@ -7,9 +7,9 @@ import { Observable, of, Subject, Subscription } from 'rxjs';
 //import { ModalComponent } from '../modal/modal.component';
 
 @Component({
-  selector: 'app-add-stock',
-  templateUrl: './add-stock.component.html',
-  styleUrls: ['./add-stock.component.css'],
+  selector: 'app-search-stock',
+  templateUrl: './search-stock.component.html',
+  styleUrls: ['./search-stock.component.css'],
 })
 export class AddStockComponent implements OnInit, OnDestroy {
   searchText: string;
@@ -22,14 +22,6 @@ export class AddStockComponent implements OnInit, OnDestroy {
 
   constructor(private stockService: StockService) {
     this.getUserStocks();
-    this.modelChanged.pipe(debounceTime(100)).subscribe(() => {
-      if (!this.searchText) {
-        this.searchResult$ = of([]);
-        this.selectedStock = null;
-      } else {
-        this.searchResult$ = this.stockService.searchSymbol(this.searchText);
-      }
-    });
   }
 
   changed(event) {
@@ -39,6 +31,14 @@ export class AddStockComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dashboardTitle =
       'Enter the symbol of a stock to track (i.e., AAPL, TSLA, GOOGL)';
+    this.modelChanged.pipe(debounceTime(100)).subscribe(() => {
+      if (!this.searchText || this.searchText.length > 5) {
+        this.searchResult$ = of([]);
+        this.selectedStock = null;
+      } else {
+        this.searchResult$ = this.stockService.searchSymbol(this.searchText);
+      }
+    });
   }
 
   ngOnDestroy(): void {
