@@ -17,7 +17,11 @@
               {{ stock.mspr | number: '.2-2' }}
             </div>
             <div class="col-4">
-              <span *ngIf="stock.change >= 0" [innerHtml]="upArrow"></span>
+              <span
+                *ngIf="stock.change >= 0"
+                [innerHtml]="upArrow"
+                style="font-size: 16px"
+              ></span>
               <span *ngIf="stock.change < 0" [innerHtml]="downArrow"></span>
             </div>
           </div>
@@ -26,6 +30,7 @@
     </div>
   </div>
 </div>
+
 
 <a
   class="btn btn-dark"
